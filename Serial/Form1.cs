@@ -22,7 +22,7 @@ namespace Serial
         {
             Control.CheckForIllegalCrossThreadCalls = false;
             cmb_name.DataSource = SerialPort.GetPortNames();// Quét các cổng COM đang hoạt động lên comboBox1
-            this.serialPort.DataReceived +=new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort_DataReceived);
+            serialPort.DataReceived +=new System.IO.Ports.SerialDataReceivedEventHandler(serialPort_DataReceived);
             
         }
 
@@ -57,7 +57,9 @@ namespace Serial
         {
             try
             {
-               txt_dem.Text = serialPort.ReadTo("\n");
+                string line = serialPort.ReadTo("\n");
+                this.BeginInvoke(new LineReceivedEvent(LineReceived),line);
+
                 //txt_dem.Text = serialPort.ReadExisting();
               // String dataFromArduino = serialPort.ReadLine().ToString();
               // txt_dem.Text = dataFromArduino;
@@ -68,25 +70,85 @@ namespace Serial
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
+        private delegate void LineReceivedEvent(string line);
+        private void LineReceived(string line)
+        {                                            
+            int do_dai = line.Length;
+            String data_from_lora_slave = line.Substring(0,7);
+            try
+            {
+                if (data_from_lora_slave == "L01-SET")
+                {
+                    txt_status.Text = "Recived data ok";
+                }
+                else if (data_from_lora_slave == "L01-DEM")
+                {
+                    String so_dem = line.Substring(8);
+                    txt_dem.Text = so_dem;
+                }
+                else if (data_from_lora_slave == "L01-ONN")
+                {
+                    txt_status.Text = "bat dau";
+                }
+                else if (data_from_lora_slave == "L01-OFF")
+                {
+                    txt_status.Text = "ngung";
+                }         
+            }
+           catch (Exception)
+           {
 
+           }        
         }
-
         private void btn_set_Click(object sender, EventArgs e)
         {
-           String soset = this.txt_set.Text;
+           Form frm = new Form2();
+           frm.ShowDialog(); 
+           String so_set = this.txt_set.Text;
+           String bien_so = this.txt_bienso.Text;
            try
            {
-               serialPort.Write(soset);
+               serialPort.Write("L01-SET-" + so_set +"|"+ bien_so +"\n");
            }
            catch (Exception)
            {
-               
-              
+                             
            }
 
         }
+
+        private void btn_start_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serialPort.Write("L01-CMD-ONN" + "\n");
+            }
+            catch (Exception)
+            {
+
+            }
+           
+        }
+
+        private void btn_stop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serialPort.Write("L01-CMD-OFF" + "\n");
+            }
+            catch (Exception)
+            {
+
+            }
+          
+        }
+
+        private void label24_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
         }
     }
 

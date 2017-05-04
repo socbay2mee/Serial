@@ -6,3 +6,4 @@ C:\Users\socbay2me\Dropbox\Study\Semester 8 (Main)\DOAN\C#\Serial\Serial\bin\Deb
 C:\Users\socbay2me\Dropbox\Study\Semester 8 (Main)\DOAN\C#\Serial\Serial\obj\x86\Debug\Serial.exe
 C:\Users\socbay2me\Dropbox\Study\Semester 8 (Main)\DOAN\C#\Serial\Serial\obj\x86\Debug\Serial.pdb
 C:\Users\socbay2me\Dropbox\Study\Semester 8 (Main)\DOAN\C#\Serial\Serial\obj\x86\Debug\Serial.csprojResolveAssemblyReference.cache
+C:\Users\socbay2me\Dropbox\Study\Semester 8 (Main)\DOAN\C#\Serial\Serial\obj\x86\Debug\Serial.Form2.resources
